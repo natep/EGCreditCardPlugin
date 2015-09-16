@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="com.egate-solutions.plugin.EGCreditCardPlugin"
+        version="0.0.1">
+
+  <name>EGCreditCardPlugin</name>
+  <description>A PhoneGap plugin that interfaces with the Ingenico card reader.</description>
+
+  <engines>
+    <engine name="cordova" version=">=3.9.1" />
+  </engines>
+
+  <js-module src="www/credit_card.js" name="EGCreditCardPlugin">
+    <clobbers target="EGCreditCardPlugin" />
+  </js-module>
+
+  <!-- ios -->
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="EGCreditCardPlugin">
+        <param name="ios-package" value="EGCreditCardPlugin" />
+      </feature>
+    </config-file>
+    <config-file target="*-Info.plist" parent="UISupportedExternalAccessoryProtocols">
+      <array>
+        <string>com.ingenico.easypayemv.spm-transaction</string>
+      </array>
+    </config-file>
+    
+    <header-file src="src/ios/EGCreditCardPlugin.h" />
+    <source-file src="src/ios/EGCreditCardPlugin.m" />
+    <header-file src="src/ios/NSLogAdapter.h" />
+    <source-file src="src/ios/NSLogAdapter.m" />
+    <header-file src="src/ios/lib/EGCardReaderManager.h" />
+    <source-file src="src/ios/lib/EGCardReaderManager.m" />
+    <header-file src="src/ios/lib/EGCardTransactionFactory.h" />
+    <source-file src="src/ios/lib/EGCardTransactionFactory.m" />
+    <header-file src="src/ios/lib/EGCardTransactionImpl.h" />
+    <source-file src="src/ios/lib/EGCardTransactionImpl.m" />
+    <header-file src="src/ios/lib/EGCurrencyCodeConverter.h" />
+    <source-file src="src/ios/lib/EGCurrencyCodeConverter.m" />
+    <header-file src="src/ios/lib/EGEMVTransactionResult.h" />
+    <header-file src="src/ios/lib/EGEMVTransactionResultImpl.h" />
+    <source-file src="src/ios/lib/EGEMVTransactionResultImpl.m" />
+    <header-file src="src/ios/lib/EGLoggingDelegate.h" />
+    <header-file src="src/ios/lib/EGTransactionResult.h" />
+    <header-file src="src/ios/lib/EGTransactionResultImpl.h" />
+    <source-file src="src/ios/lib/EGTransactionResultImpl.m" />
+
+    <resource-file src="src/ios/EGCreditCardHandler.strings" />
+
+    <framework src="libc++.dylib"/>
+    <framework src="ExternalAccessory.framework"/>
+    <framework src="src/ios/lib/RBA_SDK.framework" custom="true" />
+  </platform>
+
+</plugin>

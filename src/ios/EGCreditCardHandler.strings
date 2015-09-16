@@ -1,0 +1,23 @@
+/* 
+  EGCreditCardHandler.strings
+  EGCreditCardPlugin
+
+  Created by Nate Petersen on 8/27/15.
+  Copyright (c) 2015 eGate Solutions. All rights reserved.
+*/
+
+// error messages
+"transaction_cancelled" = "The transaction was cancelled.";
+"card_read_error" = "Error reading card.";
+"invalid_chip_card" = "The card must be inserted in a chip reader, or is invalid.";
+"emv_auth_failed" = "Unable to authorize card.";
+"device_connect_failed" = "Could not connect to card reader.";
+"device_online_failed" = "Failed to take card reader online.";
+"device_offline_failed" = "Failed to take card reader offline.";
+"config_write_failed" = "Failed to set device configuration.";
+"config_read_failed" = "Failed to read device configuration.";
+"message_send_failed" = "Failed to send message to card reader.";
+
+// device prompts
+"tap_card_prompt" = "Please tap card";
+"slide_card_prompt" = "Please slide card";

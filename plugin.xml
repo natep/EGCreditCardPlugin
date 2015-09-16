@@ -7,7 +7,7 @@
   <description>A PhoneGap plugin that interfaces with the Ingenico card reader.</description>
 
   <engines>
-    <engine name="cordova" version=">=3.9.1" />
+    <engine name="cordova" version=">=3.0.0" />
   </engines>
 
   <js-module src="www/credit_card.js" name="EGCreditCardPlugin">

@@ -29,6 +29,7 @@ NSString* const EGCreditCardHandlerErrorDomain = @"com.egate-solutions.EGCreditC
 const NSInteger EGCreditCardHandlerTransactionCancelledErrorCode = 1;
 const NSInteger EGCreditCardHandlerIngenicoSDKErrorCode = 2;
 const NSInteger EGCreditCardHandlerInvalidOrChipCardErrorCode = 3;
+const NSInteger EGCreditCardHandlerDeviceDisconnectedErrorCode = 4;
 
 // RBA constants
 
@@ -125,6 +126,7 @@ typedef enum {
 		} else {
 			EGLogInfo(@"Ingenico SDK initialized.");
 			[RBA_SDK SetDelegate:self];
+			[RBA_SDK EnableNotifyRbaDisconnect:YES];
 		}
 	}
 	
@@ -258,6 +260,15 @@ typedef enum {
 			break;
 		}
 	}
+}
+
+-(void) RBA_Disconnected
+{
+	NSError* error = [NSError errorWithDomain:EGCreditCardHandlerErrorDomain
+										 code:EGCreditCardHandlerDeviceDisconnectedErrorCode
+									 userInfo:@{ NSLocalizedDescriptionKey : EGCLS(@"device_disconnected_error") }];
+	
+	[self callbackWithResult:nil error:error];
 }
 
 - (void)handleNonEMVCardReadResponse

@@ -21,6 +21,7 @@ extern NSString* const EGCreditCardHandlerErrorDomain;
 extern const NSInteger EGCreditCardHandlerTransactionCancelledErrorCode;
 extern const NSInteger EGCreditCardHandlerIngenicoSDKErrorCode;
 extern const NSInteger EGCreditCardHandlerInvalidOrChipCardErrorCode;
+extern const NSInteger EGCreditCardHandlerDeviceDisconnectedErrorCode;
 
 /**
  * A callback that is executed when a transaction is complete.

@@ -1,6 +1,6 @@
 /* 
   EGCreditCardHandler.strings
-  EGCreditCardPlugin
+  EGCreditCardHandlerExample
 
   Created by Nate Petersen on 8/27/15.
   Copyright (c) 2015 eGate Solutions. All rights reserved.
@@ -17,6 +17,7 @@
 "config_write_failed" = "Failed to set device configuration.";
 "config_read_failed" = "Failed to read device configuration.";
 "message_send_failed" = "Failed to send message to card reader.";
+"device_disconnected_error" = "Lost connection to card reader.";
 
 // device prompts
 "tap_card_prompt" = "Please tap card";

@@ -48,6 +48,7 @@
     <source-file src="src/ios/lib/EGTransactionResultImpl.m" />
 
     <resource-file src="src/ios/EGCreditCardHandler.strings" />
+    <resource-file src="src/ios/lib/currencyCodes.json" />
 
     <framework src="libc++.dylib"/>
     <framework src="ExternalAccessory.framework"/>

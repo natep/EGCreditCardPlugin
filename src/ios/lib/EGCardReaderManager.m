@@ -391,7 +391,7 @@ typedef enum {
 - (NSString*)centStringForDecimalNumber:(NSDecimalNumber*)number
 {
 	NSInteger centAmount = [[number decimalNumberByMultiplyingByPowerOf10:2] integerValue];
-	return [NSString stringWithFormat:@"%ld", (long)centAmount];
+	return [NSString stringWithFormat:@"%03ld", (long)centAmount];
 }
 
 - (NSError*)connectToRBA

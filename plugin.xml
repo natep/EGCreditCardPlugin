@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         id="com.egate-solutions.plugin.EGCreditCardPlugin"
-        version="0.0.5">
+        version="0.0.6">
 
   <name>EGCreditCardPlugin</name>
   <description>A PhoneGap plugin that interfaces with the Ingenico card reader.</description>

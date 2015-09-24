@@ -11,6 +11,7 @@
 #import <RBA_SDK/RBA_SDK.h>
 #import "EGCardTransactionFactory.h"
 #import "EGEMVTransactionResultImpl.h"
+#import "EGCreditCardInfoImpl.h"
 
 // logging macros
 #define EGLogError(frmt, ...) [self.loggingDelegate logMessageWithLevel:EGLogLevelError file:__FILE__ function:__PRETTY_FUNCTION__ lineNumber:__LINE__ format:(frmt), ## __VA_ARGS__]
@@ -167,7 +168,7 @@ typedef enum {
 										 code:EGCreditCardHandlerTransactionCancelledErrorCode
 									 userInfo:@{ NSLocalizedDescriptionKey : EGCLS(@"transaction_cancelled") }];
 	
-	[self callbackWithResult:nil error:error];
+	[self callbackWithResult:nil cardInfo:nil error:error];
 }
 
 #pragma mark - Logging Adapter
@@ -220,7 +221,7 @@ typedef enum {
 												 code:EGCreditCardHandlerTransactionCancelledErrorCode
 											 userInfo:@{ NSLocalizedDescriptionKey : EGCLS(@"transaction_cancelled") }];
 			
-			[self callbackWithResult:nil error:error];
+			[self callbackWithResult:nil cardInfo:nil error:error];
 			
 			break;
 		}
@@ -268,7 +269,7 @@ typedef enum {
 										 code:EGCreditCardHandlerDeviceDisconnectedErrorCode
 									 userInfo:@{ NSLocalizedDescriptionKey : EGCLS(@"device_disconnected_error") }];
 	
-	[self callbackWithResult:nil error:error];
+	[self callbackWithResult:nil cardInfo:nil error:error];
 }
 
 - (void)handleNonEMVCardReadResponse
@@ -277,6 +278,7 @@ typedef enum {
 	NSString* serviceCode = [self getVariable:RBA_SERVICE_CODE_VAR outError:nil];
 	NSError* error = nil;
 	EGTransactionResultImpl* transactionResult = nil;
+	id<EGCreditCardInfo> cardInfo = nil;
 	
 	if ([self isCardValidAndMagnetic:serviceCode]) {
 		NSString* exitType = [RBA_SDK GetParam:P23_RES_EXIT_TYPE];
@@ -289,6 +291,8 @@ typedef enum {
 			EGLogVerbose(@"Got track 1 data: %@", track1);
 			EGLogVerbose(@"Got track 2 data: %@", track2);
 			EGLogVerbose(@"Got track 3 data: %@", track3);
+			
+			cardInfo = [[EGCreditCardInfoImpl alloc] initWithTrack1Data:track1 track2Data:track2];
 			
 // TODO: can the amount change? Like with cash back?
 			transactionResult = [[EGTransactionResultImpl alloc] initWithCardTransaction:self.currentTransaction
@@ -307,7 +311,7 @@ typedef enum {
 								userInfo:@{ NSLocalizedDescriptionKey : EGCLS(@"invalid_chip_card") }];
 	}
 	
-	[self callbackWithResult:transactionResult error:error];
+	[self callbackWithResult:transactionResult cardInfo:cardInfo error:error];
 }
 
 - (void)handleEMVTransactionPreparationResponse
@@ -368,10 +372,10 @@ typedef enum {
 	
 	self.currentEMVResponse = nil;
 	
-	[self callbackWithResult:result error:error];
+	[self callbackWithResult:result cardInfo:result.creditCardInfo error:error];
 }
 
-- (void)callbackWithResult:(id<EGTransactionResult>)transactionResult error:(NSError*)error
+- (void)callbackWithResult:(id<EGTransactionResult>)transactionResult cardInfo:(id<EGCreditCardInfo>)cardInfo error:(NSError*)error
 {
 	[self takeRBAOffline];
 	self.currentTransaction = nil;
@@ -381,7 +385,7 @@ typedef enum {
 		self.currentTransactionCallback = nil;
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
-			callback(transactionResult, error);
+			callback(transactionResult, cardInfo, error);
 		});
 	}
 }
@@ -702,7 +706,7 @@ typedef enum {
 		
 		if (error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				callback(nil, error);
+				callback(nil, nil, error);
 			});
 			
 			return;
@@ -713,7 +717,7 @@ typedef enum {
 	
 	if (error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			callback(nil, error);
+			callback(nil, nil, error);
 		});
 		
 		return;
@@ -723,7 +727,7 @@ typedef enum {
 	
 	if (error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			callback(nil, error);
+			callback(nil, nil, error);
 		});
 		
 		return;
@@ -750,7 +754,7 @@ typedef enum {
 		
 		if (error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				callback(nil, error);
+				callback(nil, nil, error);
 			});
 			
 			return;
@@ -761,7 +765,7 @@ typedef enum {
 	
 	if (error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			callback(nil, error);
+			callback(nil, nil, error);
 		});
 		
 		return;
@@ -771,7 +775,7 @@ typedef enum {
 	
 	if (error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			callback(nil, error);
+			callback(nil, nil, error);
 		});
 		
 		return;
@@ -781,7 +785,7 @@ typedef enum {
 	
 	if (error) {
 		dispatch_async(dispatch_get_main_queue(), ^{
-			callback(nil, error);
+			callback(nil, nil, error);
 		});
 		
 		return;

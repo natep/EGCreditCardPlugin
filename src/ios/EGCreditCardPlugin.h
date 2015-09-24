@@ -11,6 +11,6 @@
 
 @interface EGCreditCardPlugin : CDVPlugin
 
-- (void)processCreditCardOnline:(CDVInvokedUrlCommand*)command;
+- (void)processCreditCard:(CDVInvokedUrlCommand*)command;
 
 @end

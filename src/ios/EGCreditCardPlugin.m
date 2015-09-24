@@ -12,6 +12,7 @@
 #import "EGEMVTransactionResult.h"
 #import "EGCardTransactionFactory.h"
 #import "NSLogAdapter.h"
+#import "EGCreditCardInfo.h"
 
 enum {
 	CARD_TYPE_ARG,
@@ -115,7 +116,7 @@ enum {
 	return map;
 }
 
-- (void)processCreditCardOnline:(CDVInvokedUrlCommand*)command
+- (void)processCreditCard:(CDVInvokedUrlCommand*)command
 {
 	EGCardReaderManager* reader = [self.class cardReader];
 	
@@ -134,12 +135,12 @@ enum {
 																			fareClass:nil
 																  frequentFlyerStatus:nil];
 	
-	EGTransactionCallback callback = ^(id<EGTransactionResult> transactionResult, NSError *error) {
+	EGTransactionCallback callback = ^(id<EGTransactionResult> transactionResult, id<EGCreditCardInfo> cardInfo, NSError *error) {
 		if (error) {
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 		} else {
-			NSDictionary* dict = [self dictionaryFromTransactionResult:transactionResult];
+			NSDictionary* dict = [self dictionaryFromTransactionResult:transactionResult cardInfo:cardInfo];
 			CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 		}
@@ -162,10 +163,24 @@ enum {
 	}
 }
 
-- (NSDictionary*)dictionaryFromTransactionResult:(id<EGTransactionResult>)result
+- (NSDictionary*)dictionaryFromTransactionResult:(id<EGTransactionResult>)result cardInfo:(id<EGCreditCardInfo>)cardInfo
 {
 	NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-	dict[@"track1"] = result.cardTrackData;
+	dict[@"trackData"] = result.cardTrackData;
+	
+	if (cardInfo.cardholderName.length > 0) {
+		dict[@"cardholderName"] = cardInfo.cardholderName;
+	}
+	
+	if (cardInfo.cardNumber.length > 0) {
+		dict[@"cardNumber"] = cardInfo.cardNumber;
+	}
+	
+	if (cardInfo.expirationDate.length > 0) {
+		dict[@"expirationDate"] = cardInfo.expirationDate;
+	}
+	
+	dict[@"cardType"] = [self.class stringForCardType:cardInfo.cardType];
 	
 	if ([result conformsToProtocol:@protocol(EGEMVTransactionResult)]) {
 		NSObject* emvResult = result;
@@ -182,6 +197,22 @@ enum {
 	}
 	
 	return dict.copy;
+}
+
++ (NSString*)stringForCardType:(EGCreditCardType)cardType
+{
+	
+	switch (cardType) {
+		case EGVisaCreditCardType:			return @"VISA";
+		case EGMastercardCreditCardType:	return @"MASTERCARD";
+		case EGAmexCreditCardType:			return @"AMEX";
+		case EGDiscoverCreditCardType:		return @"DISCOVER";
+		case EGDinersCreditCardType:		return @"DINERS";
+		case EGJCBCreditCardType:			return @"JCB";
+		case EGCarteBlancheCreditCardType:	return @"CARTEBLANCHE";
+		case EGDankortCreditCardType:		return @"DANKORT";
+		case EGUnknownCreditCardType:		return @"UNKNOWN";
+	}
 }
 
 @end

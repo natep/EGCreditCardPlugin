@@ -10,14 +10,19 @@
  * @param {Function} successCallback	A callback executed upon success. It takes a single string argument: an object, whose key-values contain the credit card data.
  * @param {Function} errorCallback	A callback executed upon failure. It takes a single string argument: an error message.
  */
-window.processCreditCardOnline = function(cardType, refund, amount, currencyCode, successCallback, errorCallback) {
-	cordova.exec(successCallback, errorCallback, "EGCreditCardPlugin", "processCreditCardOnline", [cardType, refund, amount, currencyCode]);
+window.processCreditCard = function(cardType, refund, amount, currencyCode, successCallback, errorCallback) {
+	cordova.exec(successCallback, errorCallback, "EGCreditCardPlugin", "processCreditCard", [cardType, refund, amount, currencyCode]);
 };
 
 /*
  * The success callback will be passed an object/dictionary/map containing all the card
- * data that was read. For non-EMV cards, a single key/value will be present: "track1". This
- * is the magnetic card data.
+ * data that was read. For non-EMV cards, these values will be present:
+ *
+ * trackData
+ * cardholderName
+ * expirationDate
+ * cardNumber
+ * cardType
  *
  * For EMV cards, these additional fields will also be present (though some may have a nil value):
  *

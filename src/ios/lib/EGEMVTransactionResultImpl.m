@@ -10,6 +10,7 @@
 #import <RBA_SDK/RBA_SDK.h>
 #import "EGCurrencyCodeConverter.h"
 #import "EGCardTransactionFactory.h"
+#import "EGCreditCardInfoImpl.h"
 
 /*
  * We want to use this long ugly method so these property names are
@@ -17,6 +18,8 @@
  */
 
 #define PROP_NAME(arg) NSStringFromSelector(@selector(arg))
+
+static NSString* const EMV_TRACK_DATA_TAG = @"57";
 
 @interface EGEMVTransactionResultImpl ()
 
@@ -64,6 +67,8 @@
 @property(nonatomic,copy) NSString* nonEMVErrorResponseCode;
 @property(nonatomic,copy) NSString* nonEMVCardPaymentCode;
 @property(nonatomic,copy) NSString* nonEMVCardEntryCode;
+
+@property(nonatomic,strong,readonly) id<EGCreditCardInfo> creditCardInfo;
 
 @end
 
@@ -120,12 +125,17 @@
 	if ([paramArray count] == 3) {
 		NSString* tag = [paramArray[0] substringFromIndex:1];
 		NSString* data = [paramArray[2] substringFromIndex:1];
-		NSString* propName = [EGEMVTransactionResultImpl propertyNameForTag:tag];
 		
-		if (propName) {
-			[self setValue:data forKey:propName];
+		if ([tag isEqualToString:EMV_TRACK_DATA_TAG]) {
+			_creditCardInfo = [[EGCreditCardInfoImpl alloc] initWithTrack1Data:nil track2Data:data];
 		} else {
-//			NSLog(@"Unknown tag: %@", tag);
+			NSString* propName = [EGEMVTransactionResultImpl propertyNameForTag:tag];
+			
+			if (propName) {
+				[self setValue:data forKey:propName];
+			} else {
+	//			NSLog(@"Unknown tag: %@", tag);
+			}
 		}
 	}
 }

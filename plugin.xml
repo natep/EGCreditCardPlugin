@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         id="com.egate-solutions.plugin.EGCreditCardPlugin"
-        version="0.0.7">
+        version="0.0.8">
 
   <name>EGCreditCardPlugin</name>
   <description>A PhoneGap plugin that interfaces with the Ingenico card reader.</description>
@@ -46,6 +46,9 @@
     <header-file src="src/ios/lib/EGTransactionResult.h" />
     <header-file src="src/ios/lib/EGTransactionResultImpl.h" />
     <source-file src="src/ios/lib/EGTransactionResultImpl.m" />
+    <header-file src="src/ios/lib/EGCreditCardInfo.h" />
+    <header-file src="src/ios/lib/EGCreditCardInfoImpl.h" />
+    <source-file src="src/ios/lib/EGCreditCardInfoImpl.m" />
 
     <resource-file src="src/ios/EGCreditCardHandler.strings" />
     <resource-file src="src/ios/lib/currencyCodes.json" />

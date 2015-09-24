@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "EGTransactionResultImpl.h"
 #import "EGEMVTransactionResult.h"
+#import "EGCreditCardInfo.h"
 
 @interface EGEMVTransactionResultImpl : EGTransactionResultImpl <EGEMVTransactionResult>
 
@@ -60,5 +61,7 @@
 - (void)updateWithRBAParameter:(NSInteger)parameterId;
 
 - (BOOL)isOfflineApproved;
+
+- (id<EGCreditCardInfo>)creditCardInfo;
 
 @end

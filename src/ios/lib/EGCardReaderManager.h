@@ -12,6 +12,7 @@
 @protocol EGFlightInfo;
 @protocol EGLoggingDelegate;
 @protocol EGTransactionResult;
+@protocol EGCreditCardInfo;
 
 /**
  * These constants are used in error messages.
@@ -27,7 +28,7 @@ extern const NSInteger EGCreditCardHandlerDeviceDisconnectedErrorCode;
  * A callback that is executed when a transaction is complete.
  * If an error occurs, the error parameter will be non-nil.
  */
-typedef void (^EGTransactionCallback)(id<EGTransactionResult> transactionResult, NSError* error);
+typedef void (^EGTransactionCallback)(id<EGTransactionResult> transactionResult, id<EGCreditCardInfo> cardInfo, NSError* error);
 
 /**
  * A manager responsible for interacting with the card reader device.

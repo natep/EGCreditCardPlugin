@@ -13,4 +13,6 @@
 
 - (void)processCreditCard:(CDVInvokedUrlCommand*)command;
 
+- (void)cancelCreditCardProcessing:(CDVInvokedUrlCommand*)command;
+
 @end

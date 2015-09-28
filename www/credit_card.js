@@ -1,5 +1,14 @@
 
 /**
+ * Requests that the current transaction in process be cancelled.
+ *
+ * @param {Function} callback	A callback executed upon completion.
+ */
+window.cancelCreditCardProcessing = function(callback) {
+	cordova.exec(callback, callback, "EGCreditCardPlugin", "cancelCreditCardProcessing", []);
+};
+
+/**
  * Reads a credit card using the Ingenico device, and returns the result.
  * See the note below for more information on the success response.
  *

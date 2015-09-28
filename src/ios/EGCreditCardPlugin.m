@@ -163,6 +163,14 @@ enum {
 	}
 }
 
+- (void)cancelCreditCardProcessing:(CDVInvokedUrlCommand*)command
+{
+	EGCardReaderManager* reader = [self.class cardReader];
+	[reader cancelTransaction];
+	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (NSDictionary*)dictionaryFromTransactionResult:(id<EGTransactionResult>)result cardInfo:(id<EGCreditCardInfo>)cardInfo
 {
 	NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
